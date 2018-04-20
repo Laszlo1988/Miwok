@@ -77,7 +77,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
             //Set the imageView GONE (invisible without taking any space for layout purposes.
             imageView.setVisibility(View.GONE);
         }
-        
+
         // Return the whole list item layout (containing 2 TextViews and an ImageView)
         // so that it can be shown in the ListView
         return listItemView;

@@ -33,4 +33,7 @@
 
     <!-- Background color for the phrases category -->
     <color name="category_phrases">#16AFCA</color>
+
+    <!-- Text color of the words in the Word object. -->
+    <color name="word_object_text_color">#FFFFFF</color>
 </resources>
