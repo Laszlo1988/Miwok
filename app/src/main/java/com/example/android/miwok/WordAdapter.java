@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,10 +24,10 @@ public class WordAdapter extends ArrayAdapter<Word> {
      * to populate into the lists.
      *
      * @param context     The current context. Used to inflate the layout file.
-     * @param wordsObject A List of Word objects to display in a list
+     * @param words A List of Word objects to display in a list
      */
-    public WordAdapter(Activity context, ArrayList<Word> wordsObject) {
-        super(context, 0, wordsObject);
+    public WordAdapter(Activity context, ArrayList<Word> words) {
+        super(context, 0, words);
     }
 
     /**
@@ -59,6 +60,24 @@ public class WordAdapter extends ArrayAdapter<Word> {
         TextView defaultTextView = (TextView) listItemView.findViewById(R.id.default_text_view);
         defaultTextView.setText(currentWord.getDefaultTranslation());
 
+        // Find the ImageView in the list_item.xml layout with the ID list_item_icon
+        ImageView imageView = (ImageView) listItemView.findViewById(R.id.image);
+
+        //If there is a valid image, imageView is set to be VISIBLE, otherwise to GONE.
+        if (currentWord.hasImage()) {
+
+            // Get the image resource ID from the current Word object and
+            // set the image to iconView
+            imageView.setImageResource(currentWord.getImageResourceId());
+
+            //Make sure the view is visible.
+            imageView.setVisibility(View.VISIBLE);
+
+        } else {
+            //Set the imageView GONE (invisible without taking any space for layout purposes.
+            imageView.setVisibility(View.GONE);
+        }
+        
         // Return the whole list item layout (containing 2 TextViews and an ImageView)
         // so that it can be shown in the ListView
         return listItemView;
