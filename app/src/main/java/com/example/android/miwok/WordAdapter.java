@@ -1,8 +1,10 @@
 package com.example.android.miwok;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +20,20 @@ import java.util.ArrayList;
 * */
 public class WordAdapter extends ArrayAdapter<Word> {
 
+    private int mColorResourceId;
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
      * The context is used to inflate the layout file, and the list is the data we want
      * to populate into the lists.
      *
-     * @param context     The current context. Used to inflate the layout file.
+     * @param context The current context. Used to inflate the layout file.
      * @param words A List of Word objects to display in a list
+     * @param colorResourceId is the resource ID for the background color for this list of words
      */
-    public WordAdapter(Activity context, ArrayList<Word> words) {
+    public WordAdapter(Activity context, ArrayList<Word> words, int colorResourceId) {
         super(context, 0, words);
+
+        mColorResourceId = colorResourceId;
     }
 
     /**
@@ -45,6 +51,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
         View listItemView = convertView;
 
         if (listItemView == null) {
+
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item, parent, false);
         }
@@ -77,6 +84,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
             //Set the imageView GONE (invisible without taking any space for layout purposes.
             imageView.setVisibility(View.GONE);
         }
+
+        // Set the theme color for the list item
+        View textContainer = listItemView.findViewById(R.id.text_container);
+
+        // Find the color that the resource ID maps to
+        int color = ContextCompat.getColor(getContext(), mColorResourceId);
+
+        // Set the background color of the text container View
+        textContainer.setBackgroundColor(color);
 
         // Return the whole list item layout (containing 2 TextViews and an ImageView)
         // so that it can be shown in the ListView
