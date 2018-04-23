@@ -9,11 +9,14 @@ public class Word {
 
     //This constant is for using as a default state  of the mImageResourceId variable.
     private static final int NO_IMAGE_PROVIDED = -1;
+
     //Default translation for word
     private String mDefaultTranslation;
+
     //Miwok translation for the word
     private String mMiwokTranslation;
-    //Image for the words.
+
+    //Image for the word.
     private int mImageResourceId = NO_IMAGE_PROVIDED;
 
     /**
