@@ -12,21 +12,46 @@
         android:layout_width="@dimen/list_item_height"
         android:layout_height="@dimen/list_item_height" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/text_container"
-        style="@style/WordTextLayoutStyle">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:orientation="horizontal"
+        tools:background="@color/category_numbers">
 
-        <TextView
-            android:id="@+id/miwok_text_view"
-            style="@style/WordsStyle"
-            android:textStyle="bold"
-            tools:text="lutti" />
+        <LinearLayout
 
-        <TextView
-            android:id="@+id/default_text_view"
-            style="@style/WordsStyle"
-            tools:text="one" />
+            style="@style/WordTextLayoutStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/miwok_text_view"
+                style="@style/WordsStyle"
+                android:textStyle="bold"
+                tools:text="lutti" />
+
+            <TextView
+                android:id="@+id/default_text_view"
+                style="@style/WordsStyle"
+                tools:text="one" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_play" />
+
+    </RelativeLayout>
 
 </LinearLayout>
