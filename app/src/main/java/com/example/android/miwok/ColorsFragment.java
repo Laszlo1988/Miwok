@@ -22,19 +22,10 @@ public class ColorsFragment extends Fragment {
 
     //In this variable, an instance of the MediaPlayer class will be created.
     private MediaPlayer mMediaPlayer;
-
-    private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mediaPlayer) {
-            releaseMediaPlayer();
-        }
-    };
-
     /**
      * Handles audio focus when playing a sound file
      */
     private AudioManager mAudioManager;
-
     /**
      * This listener gets triggered whenever the audio focus changes
      * (i.e., we gain or lose audio focus because of another app or device).
@@ -62,10 +53,14 @@ public class ColorsFragment extends Fragment {
             } else if (focusChange == mAudioManager.AUDIOFOCUS_LOSS) {
                 // The AUDIOFOCUS_LOSS case means we've lost audio focus and
                 // Stop playback and clean up resources
-                mMediaPlayer.stop();
                 releaseMediaPlayer();
-
             }
+        }
+    };
+    private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
+            releaseMediaPlayer();
         }
     };
 
@@ -115,9 +110,18 @@ public class ColorsFragment extends Fragment {
                 // play a different sound file
                 releaseMediaPlayer();
 
+                // Get the {@link Word} object at the given position the user clicked on
                 Word word = words.get(position);
 
-                if (requestAudioFocus() == true) {
+                // Request audio focus so in order to play the audio file. The app needs to play a
+                // short audio file, so we will request audio focus with a short amount of time
+                // with AUDIOFOCUS_GAIN_TRANSIENT.
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener, AudioManager.STREAM_MUSIC,
+                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    // We have audio focus now.
+
                     mMediaPlayer = MediaPlayer.create(getActivity(), word.getAudioResourceId());
 
                     mMediaPlayer.start();
@@ -125,10 +129,6 @@ public class ColorsFragment extends Fragment {
                     // Setup a listener on the media player, so that we can stop and release the
                     // media player once the sound has finished playing.
                     mMediaPlayer.setOnCompletionListener(mCompletionListener);
-                } else {
-                    Toast.makeText(getActivity(), "Audio Focus Request Failed",
-                            Toast.LENGTH_SHORT).show();
-                    releaseMediaPlayer();
                 }
             }
         });
@@ -159,25 +159,10 @@ public class ColorsFragment extends Fragment {
             // setting the media player to null is an easy way to tell that the media player
             // is not configured to play an audio file at the moment.
             mMediaPlayer = null;
+
+            // Regardless of whether or not we were granted audio focus, abandon it. This also
+            // unregisters the AudioFocusChangeListener so we don't get anymore callbacks.
+            mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
         }
     }
-
-    private boolean requestAudioFocus() {
-
-        // Request audio focus so in order to play the audio file. The app needs to play a
-        // short audio file, so we will request audio focus with a short amount of time
-        // with AUDIOFOCUS_GAIN_TRANSIENT.
-        int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener, AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-
-        boolean returnValue = false;
-
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            returnValue = true;
-        } else if (result == AudioManager.AUDIOFOCUS_REQUEST_FAILED) {
-            returnValue = false;
-        }
-        return returnValue;
-    }
-
 }

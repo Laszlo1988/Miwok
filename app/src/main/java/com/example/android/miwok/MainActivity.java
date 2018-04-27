@@ -15,12 +15,9 @@
  */
 package com.example.android.miwok;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,76 +28,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Set the content of the activity to use the activity_main.xml layout file
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
-        // Find the View that shows the numbers category
-        TextView numbers = (TextView) findViewById(R.id.numbers);
+        // Find the view pager that will allow the user to swipe between fragments
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        // Set a click listener on that View
-        numbers.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the numbers View is clicked on.
-            @Override
-            public void onClick(View view) {
+        // Create an adapter that knows which fragment should be shown on each page
+        CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
 
-                //Creating an Intent to open the sub-activity contains the list of numbers. Then start this activity.
-                Intent numbersIntent = new Intent(MainActivity.this, NumbersActivity.class);
-
-                //Start the new activity.
-                startActivity(numbersIntent);
-            }
-        });
-
-        Log.i("MainActivity", "NumbersActivity started.");
-
-        // Find the View that shows the family category
-        TextView family = (TextView) findViewById(R.id.family);
-
-        // Set a click listener on that View
-        family.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the numbers View is clicked on.
-            @Override
-            public void onClick(View view) {
-
-                //Creating an Intent to open the sub-activity contains the list of numbers. Then start this activity.
-                Intent familyIntent = new Intent(MainActivity.this, FamilyActivity.class);
-
-                //Start the new activity.
-                startActivity(familyIntent);
-            }
-        });
-
-        // Find the View that shows the colors category
-        TextView colors = (TextView) findViewById(R.id.colors);
-
-        // Set a click listener on that View
-        colors.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the numbers View is clicked on.
-            @Override
-            public void onClick(View view) {
-
-                //Creating an Intent to open the sub-activity contains the list of numbers. Then start this activity.
-                Intent colorsIntent = new Intent(MainActivity.this, ColorsActivity.class);
-
-                //Start the new activity.
-                startActivity(colorsIntent);
-            }
-        });
-
-        // Find the View that shows the phrases category
-        TextView phrases = (TextView) findViewById(R.id.phrases);
-
-        // Set a click listener on that View
-        phrases.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the numbers View is clicked on.
-            @Override
-            public void onClick(View view) {
-
-                //Creating an Intent to open the sub-activity contains the list of numbers. Then start this activity.
-                Intent phrasesIntent = new Intent(MainActivity.this, PhrasesActivity.class);
-
-                //Start the new activity.
-                startActivity(phrasesIntent);
-            }
-        });
+        // Set the adapter onto the view pager
+        viewPager.setAdapter(adapter);
     }
 }
